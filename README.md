@@ -19,7 +19,7 @@
 ```python
 from pyxiaoheihe import HeyBoxClient
 
-account={'heybox_id': 1234, 'imei': '0000', 'pkey': 'TEST'}"
+account={'heybox_id': 1234, 'imei': '0000', 'pkey': 'TEST'}
 hbxcfg= {'channel': 'heybox_yingyongbao', 'os_type': 1, 'os_version': '10', 'sleep_interval': 1.0, 'auto_report': True}
 debug=False
 
@@ -35,7 +35,9 @@ print(rs)
 #  (44856136, '[Wallpaper Engine][东...ect]视频壁纸推荐', '个人觉得比较好康的视频壁纸，名字……', 18852508)]
 ```
 
-> 有关`heybox_id`, `imei`, `pkey`的获取方法可以参考[XHH_AUTO][xhh_auto]中的教程, 或者使用`HeyBoxClient._login()`方法自动获取（会顶掉原客户端的登陆）.
+> 部分`API`需要真实的账号信息才可用
+> 有关`heybox_id`, `imei`, `pkey`的获取方法可以参考[XHH_AUTO][xhh_auto]中的教程
+> 或者使用`HeyBoxClient._login()`方法自动获取（会顶掉原客户端的登陆）
 
 [codacy_b]: https://app.codacy.com/project/badge/Grade/ec2842e7b7a94265869679c6620fb109
 [codacy]: https://www.codacy.com/manual/chr233/pyxiaoheihe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=chr233/pyxiaoheihe&amp;utm_campaign=Badge_Grade
