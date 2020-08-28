@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="pyxiaoheihe",
-    version="1.0.5",
+    version="1.0.6",
     author="Chr_",
     author_email="chr@chrxw.com",
     description="用Python实现的小黑盒客户端",
