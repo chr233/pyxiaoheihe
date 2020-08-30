@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 16:28:55
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-08 19:47:16
+# @LastEditTime : 2020-08-30 09:42:20
 # @Description  : 首页模块,负责[首页]TAB下的内容
 '''
 
@@ -152,7 +152,7 @@ class Index(Network):
                     # level = comment['level_info']['level'] #等级
                     # self.logger.debug(
                     #     f'[{username}][{userid}]：[{commentid}][{text}]')
-                    tmp.append((commentid, userid, text))
+                    tmp.append((commentid, text, userid))
                 except KeyError:
                     self.logger.error(f'[*] 拉取文章评论出错 [{cmt}]')
             self.logger.debug(f'拉取[{len(tmp)}]条评论')
