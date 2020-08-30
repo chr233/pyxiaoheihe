@@ -1,11 +1,12 @@
 import setuptools
+from pyxiaoheihe.static import PYXIAOHEIHE_VERSION
 
 with open("README.md", "r", encoding='utf-8') as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="pyxiaoheihe",
-    version="1.0.6",
+    version=PYXIAOHEIHE_VERSION,
     author="Chr_",
     author_email="chr@chrxw.com",
     description="用Python实现的小黑盒客户端",
