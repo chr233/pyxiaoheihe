@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 17:50:27
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-09-04 23:32:10
+# @LastEditTime : 2020-09-04 23:55:04
 # @Description  : 网络模块,负责网络请求
 '''
 
@@ -271,8 +271,8 @@ class Network():
                              '你的账号已被限制访问，如有疑问请于管理员联系'):
                     raise TokenError(f'登录失败@{msg}')
 
-                elif msg == '您今日的赞赏次数已用完':
-                    raise AccountLimited('该账号今日赞赏次数用尽')
+                elif msg in ('您今日的赞赏次数已用完','您今日的关注次数已用完'):
+                    raise AccountLimited('当前账号关注次数或者点赞次数用尽')
 
                 elif msg == '系统时间不正确':
                     raise OSError('系统时间错误')
