@@ -3,7 +3,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-29 14:07:28
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-21 12:13:14
+# @LastEditTime : 2020-09-04 23:27:31
 # @Description  : 异常模块
 '''
 
@@ -31,6 +31,13 @@ class TokenError(HeyboxException):
 
     def __init__(self, info=None):
         super().__init__(info or '凭据错误,请检查配置文件')
+
+class AccountLimited(HeyboxException):
+    '点赞次数用完'
+
+    def __init__(self, info=None):
+        super().__init__(info or '该账号点赞次数用完')
+
 
 
 class UnknownError(HeyboxException):

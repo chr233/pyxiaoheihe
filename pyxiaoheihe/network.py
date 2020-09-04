@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 17:50:27
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-21 12:23:09
+# @LastEditTime : 2020-09-04 23:32:10
 # @Description  : 网络模块,负责网络请求
 '''
 
@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 from .static import HEYBOX_VERSION, Android_UA, iOS_UA, URLS
 from .static import ENC_STATIC, CommentType, ReportType
 from .utils import md5_calc, encrypt_data, b64encode, rsa_encrypt, gen_random_str
-from .error import ClientException, Ignore, UnknownError, TokenError
+from .error import ClientException, Ignore, UnknownError, TokenError, AccountLimited
 
 
 class Network():
@@ -36,9 +36,11 @@ class Network():
         super().__init__()
 
         try:
-            os_type = hbxcfg.get('os_type', 1)
-            os_version = hbxcfg.get('os_version', '9')
-            channel = hbxcfg.get('channel', 'heybox_yingyongbao')
+            os_type = account.get('os_type') or hbxcfg.get('os_type', 1)
+            os_version = account.get('os_version') or hbxcfg.get(
+                'os_version', '9')
+            channel = account.get('channel') or hbxcfg.get(
+                'channel', 'heybox_yingyongbao')
             sleep_interval = hbxcfg.get('sleep_interval', 1)
             auto_report = hbxcfg.get('auto_report', True)
             heybox_id = account.get('heybox_id', -1)
@@ -269,24 +271,27 @@ class Network():
                              '你的账号已被限制访问，如有疑问请于管理员联系'):
                     raise TokenError(f'登录失败@{msg}')
 
+                elif msg == '您今日的赞赏次数已用完':
+                    raise AccountLimited('该账号今日赞赏次数用尽')
+
                 elif msg == '系统时间不正确':
                     raise OSError('系统时间错误')
 
                 elif msg == '出现了一些问题，请稍后再试':
-                    self.logger.error(f'返回值:{jd}')
+                    self.logger.error(f'返回值: {jd}')
                     self.logger.error('出现这个错误的原因未知,有可能是访问频率过快,请过一会再重新运行脚本')
-                    raise UnknownError(f'返回值:{jd}')
+                    raise UnknownError(f'返回值: {jd}')
 
                 elif msg == '参数错误':
                     self.logger.error(f'返回值:{jd}')
                     self.logger.error('请求参数错误, 有可能是小黑盒更新了, 请更新脚本')
                     raise UnknownError(f'返回值:{jd}')
 
-                self.logger.error(f'未知的返回值[{msg}]')
+                self.logger.error(f'未知的返回值: {msg}')
                 self.logger.error('请将以下内容发送到chr@chrxw.com')
-                self.logger.error(f'{jd}')
+                self.logger.error(f'返回值: {jd}')
                 self.logger.error(f'{traceback.print_stack()}')
-                raise UnknownError(f'未知的返回值[{msg}]')
+                raise UnknownError(f'未知的返回值: {msg}')
             elif status == 'relogin':
                 raise TokenError('账号凭据过期,请重新登录')
         except (KeyError, ValueError, NameError, AttributeError):
