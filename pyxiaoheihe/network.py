@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 17:50:27
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-09-04 23:55:04
+# @LastEditTime : 2020-09-30 15:41:35
 # @Description  : 网络模块,负责网络请求
 '''
 
@@ -73,7 +73,7 @@ class Network():
         self.__sleep_interval = sleep_interval
         self.__auto_report = auto_report
         self.logger = logging.getLogger(str(heybox_id))
-        self.logger.debug('网络模块初始化完毕')
+        self.logger.debug(f'网络模块初始化完毕, 适配版本为{HEYBOX_VERSION}')
 
     def debug(self):
         '''
@@ -254,6 +254,7 @@ class Network():
                 if msg in ('操作已经完成', '不能进行重复的操作哦',
                            '不能重复赞哦', '不能给自己的评价点赞哟',
                            '自己不能粉自己哦', '您已经加入了房间',
+                           '操作已完成',
                            ''):
                     raise Ignore
 
@@ -271,7 +272,7 @@ class Network():
                              '你的账号已被限制访问，如有疑问请于管理员联系'):
                     raise TokenError(f'登录失败@{msg}')
 
-                elif msg in ('您今日的赞赏次数已用完','您今日的关注次数已用完'):
+                elif msg in ('您今日的赞赏次数已用完', '您今日的关注次数已用完'):
                     raise AccountLimited('当前账号关注次数或者点赞次数用尽')
 
                 elif msg == '系统时间不正确':
