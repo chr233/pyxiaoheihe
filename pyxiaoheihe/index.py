@@ -2,10 +2,11 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 16:28:55
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-30 09:42:20
+# @LastEditTime : 2021-11-18 20:49:43
 # @Description  : 首页模块,负责[首页]TAB下的内容
 '''
 
+from typing import Tuple
 from .network import Network
 from .static import URLS, BString, EMPTY_RETRYS, ERROR_RETRYS, EventType, NewsContentType
 from .error import ClientException, Ignore
@@ -36,9 +37,9 @@ class Index(Network):
             result = self._get(url=url, params=params)
             tmp = []
             for l in result['links']:
-                if l['content_type'] in(NewsContentType.VideoNews,
-                                        NewsContentType.TextNews,
-                                        NewsContentType.TextNewsEx):
+                if l['content_type'] in (NewsContentType.VideoNews,
+                                         NewsContentType.TextNews,
+                                         NewsContentType.TextNewsEx):
                     tmp.append((l['linkid'], l['title'],
                                 l['description'], l.get('userid', 0)))
             self.logger.debug(f'拉取了{len(tmp)}条新闻')
@@ -89,7 +90,7 @@ class Index(Network):
         idlist = [x[0] for x in newslist]
         return(idlist)
 
-    def get_news_content(self, linkid: int, index: int = 1) -> (str, dict):
+    def get_news_content(self, linkid: int, index: int = 1) -> Tuple[str, dict]:
         '''
         拉取新闻正文
 
@@ -217,7 +218,7 @@ class Index(Network):
         成功返回:
             list: [(linkid,ftype,已点赞?),……] ftype释义参见static.EventType
         '''
-        def get(offset: int, lastval: str) -> (list, str):
+        def get(offset: int, lastval: str) -> Tuple[list, str]:
             params = {'offset': offset, 'limit': 30, 'lastval': lastval,
                       'filters': 'post_link|follow_game|game_purchase|game_comment|roll_room'}
             if not lastval:
@@ -298,7 +299,7 @@ class Index(Network):
         返回:
             list: [(linkid,ftype,已点赞?),……] ftype释义参见static.EventType
             '''
-        def get(offset: int, lastval: str) -> (list, str):
+        def get(offset: int, lastval: str) -> Tuple[list, str]:
             params = {'userid': userid, 'offset': offset,
                       'limit': 30, 'lastval': lastval}
             if not lastval:

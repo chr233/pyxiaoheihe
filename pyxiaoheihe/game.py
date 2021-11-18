@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 16:29:29
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-20 17:53:32
+# @LastEditTime : 2021-11-18 20:52:44
 # @Description  : 游戏模块,负责[游戏库]TAB下的内容
 '''
 
@@ -14,7 +14,7 @@ from .error import ClientException, Ignore
 
 class Game(Network):
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool):
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool, rpc_server: str):
         super().__init__(account, hbxcfg, debug)
 
     def debug(self):
@@ -246,7 +246,7 @@ class Game(Network):
                             cardtype = CardType.Unknown
                         tmp.append((cardid, cardtype, name))
                     except KeyError as e:
-                        self.logger.debug(f'提取卡券列表出错[{r}]')
+                        self.logger.debug(f'提取卡券列表出错[{i}]')
             self.logger.debug(f'拉取[{len(tmp)}]个卡券')
             return(tmp)
         # ==========================================

@@ -2,20 +2,21 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 22:21:56
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-20 17:47:51
+# @LastEditTime : 2021-11-18 20:46:21
 # @Description  : 社区模块,负责[社区]TAB下的内容
 '''
 
+from typing import Tuple
 from .network import Network
-from .static import URLS, EMPTY_RETRYS, ERROR_RETRYS,CommentType
+from .static import URLS, EMPTY_RETRYS, ERROR_RETRYS, CommentType
 from .utils import ex_extend
 from .error import ClientException
 
 
 class Community(Network):
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool):
-        super().__init__(account, hbxcfg, debug)
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool, rpc_server: str):
+        super().__init__(account, hbxcfg, debug, rpc_server)
 
     def debug(self):
         super().debug()
@@ -30,7 +31,7 @@ class Community(Network):
         成功返回:
             list: 文章id列表,[(linkid,title,desc,userid),……]
         '''
-        def get(lastval: str, pull: int = 0) -> (list, str):
+        def get(lastval: str, pull: int = 0) -> Tuple[list, str]:
             params = {'pull': pull, 'use_history': 0, 'lastval': lastval}
             if not lastval:
                 params.pop('lastval')

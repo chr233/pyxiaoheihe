@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 17:50:27
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-09-30 15:41:35
+# @LastEditTime : 2021-11-18 21:22:48
 # @Description  : 网络模块,负责网络请求
 '''
 
@@ -10,13 +10,14 @@ import time
 import random
 import logging
 import traceback
+from typing import Tuple
 from requests import Session, Response
 from json import JSONDecodeError
 from urllib.parse import urlparse
 
 from .static import HEYBOX_VERSION, Android_UA, iOS_UA, URLS
-from .static import ENC_STATIC, CommentType, ReportType
-from .utils import md5_calc, encrypt_data, b64encode, rsa_encrypt, gen_random_str
+from .static import CommentType, ReportType
+from .utils import gen_nonce_str, encrypt_data, b64encode, rsa_encrypt, gen_random_str
 from .error import ClientException, Ignore, UnknownError, TokenError, AccountLimited
 
 
@@ -28,11 +29,12 @@ class Network():
     __params = {}
     __heybox_id = 0
     __sleep_interval = 1.0
-    __auto_report = True
+    __auto_report = False
+    __rpc_server = ''
 
     logger = logging.getLogger('-')
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool):
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool, rpc_server: str = 'http://localhost:9000/encode'):
         super().__init__()
 
         try:
@@ -58,7 +60,7 @@ class Network():
         self.__params = {'heybox_id': heybox_id, 'imei': imei,
                          'os_type': 'Android' if os_type == 1 else 'iOS',
                          'os_version': os_version, 'version': HEYBOX_VERSION, '_time': '',
-                         'hkey': '', 'channel': channel}
+                         'hkey': '', 'nonce': '', 'channel': channel}
         if os_type == 2:  # 模拟IOS客户端
             self.__params.pop('channel')
 
@@ -72,6 +74,7 @@ class Network():
         self.__heybox_id = heybox_id
         self.__sleep_interval = sleep_interval
         self.__auto_report = auto_report
+        self.__rpc_server = rpc_server
         self.logger = logging.getLogger(str(heybox_id))
         self.logger.debug(f'网络模块初始化完毕, 适配版本为{HEYBOX_VERSION}')
 
@@ -98,6 +101,9 @@ class Network():
         返回:
             bool: 操作是否成功
         '''
+
+        return False
+
         if rtype == ReportType.Source:
             # 并未完成
             return(False)
@@ -150,7 +156,7 @@ class Network():
         else:
             self.logger.debug('随机延时已禁用')
 
-    def _login(self, phone: int, password: str) -> (int, str, str):
+    def _login(self, phone: int, password: str) -> Tuple[int, str, str]:
         '''
         使用手机号密码登陆小黑盒,登陆失败返回False
         会把heybox_id设为-1
@@ -204,36 +210,31 @@ class Network():
                 path = path[:-1]
             return(path)
 
-        def encode(url: str, t: int) -> str:
-            enc = list(f'{url}{ENC_STATIC}{t}')
-            count = len(enc) - 1
-            for i in range(0, count):
-                for j in range(0, count-i):
-                    if (enc[j] > enc[j+1]):
-                        enc[j], enc[j+1] = enc[j+1], enc[j]
-            l = len(enc) // 3 + 1
-            enc += '\0'
-            enc = [enc[3*i] for i in range(0, l)]
-            if enc[-1] == '\0':
-                enc = enc[:-1]
-            enc += list(hex(t))
-            count = len(enc)-1
-            for i in range(0, count):
-                for j in range(0, count-i):
-                    if (enc[j] > enc[j+1]):
-                        enc[j], enc[j+1] = enc[j+1], enc[j]
-            result = ''.join(enc)
-            return(result)
+        def encode(url: str, nonce: str, t: int) -> str:
+            try:
+                resp = self.__session.get(
+                    url=self.__rpc_server,
+                    params={'urlpath': url, 'nonce': nonce, 'timestamp': t}
+                )
+
+                if not resp:
+                    raise ValueError('访问RPC接口失败')
+
+                return resp
+            except ValueError as e:
+                print(f'调用RPC服务器失败 {e}')
+            ...
 
         t = int(time.time())
         u = url_to_path(url)
-        h = encode(u, t)
-        h = h.replace('x', '')
-        h = md5_calc(h)
-        h = h[:10]
+        n = gen_nonce_str(32)
+        h = encode(u, n, t)
+
         p = self.__params
         p['_time'] = t
         p['hkey'] = h
+        p['nonce'] = n
+
         return(t)
 
     def __check_status(self, jd: dict):

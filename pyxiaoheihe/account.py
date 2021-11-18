@@ -2,13 +2,14 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 16:29:34
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-11 11:30:32
+# @LastEditTime : 2021-11-18 20:49:16
 # @Description  : 账号模块,负责[我]TAB下的内容
 '''
 
 
+from typing import Tuple
 from .network import Network
-from .static import HEYBOX_VERSION, URLS, BString, ERROR_RETRYS, EMPTY_RETRYS, RelationType
+from .static import URLS, BString, ERROR_RETRYS, EMPTY_RETRYS, RelationType
 from .error import *
 from .utils import ex_extend, user_relation_filter
 
@@ -16,8 +17,8 @@ from .utils import ex_extend, user_relation_filter
 class Account(Network):
     '账号模块,负责[我]TAB下的内容'
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool):
-        super().__init__(account, hbxcfg, debug)
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool, rpc_server: str):
+        super().__init__(account, hbxcfg, debug, rpc_server)
 
     def debug(self):
         super().debug()
@@ -70,7 +71,7 @@ class Account(Network):
             self.logger.error(f'[*] 获取用户关系出错 [{e}]')
             return(RelationType.Unknown)
 
-    def get_user_profile(self, userid: int = 0) -> (int, int, int):
+    def get_user_profile(self, userid: int = 0) -> Tuple[int, int, int]:
         '''
         获取个人资料,失败返回False
 
@@ -103,7 +104,7 @@ class Account(Network):
             self.logger.error(f'[*] 获取用户详情出错 [{e}]')
             return((0, 0, 0))
 
-    def get_unread_count(self) -> (int, int, int, int, int):
+    def get_unread_count(self) -> Tuple[int, int, int, int, int]:
         '''
         获取未读通知计数,失败返回False
 
@@ -143,7 +144,7 @@ class Account(Network):
         result = self._get(url=url)
         return(result)
 
-    def get_daily_task(self) -> (BString, BString, BString, BString):
+    def get_daily_task(self) -> Tuple[BString, BString, BString, BString]:
         '''
         获取每日任务详情,失败返回(False,False,False,False)
 
@@ -168,7 +169,7 @@ class Account(Network):
             self.logger.error(f'[*] 获取任务详情出错 [{e}]')
             return(False, False, False, False)
 
-    def get_my_data(self) -> (str, int, (int, int, int), int):
+    def get_my_data(self) -> Tuple[str, int, Tuple[int, int, int], int]:
         '''
         获取我的数据,出错返回False
 
@@ -358,7 +359,7 @@ class Account(Network):
         newfans = user_relation_filter(fanlist, RelationType.HeFollowedMe)
         return(newfans)
 
-    def get_auth_info(self) -> (bool, int):
+    def get_auth_info(self) -> Tuple[bool, int]:
         '''
         获取自己的安全设置,失败返回False
 

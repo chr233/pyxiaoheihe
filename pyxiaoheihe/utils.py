@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-08-01 14:50:34
 # @LastEditors  : Chr_
-# @LastEditTime : 2020-08-27 17:41:28
+# @LastEditTime : 2021-11-18 20:29:42
 # @Description  : 公共函数库
 '''
 
@@ -49,6 +49,20 @@ def gen_random_str(length: int = 8) -> str:
         str: 随机字符串
     '''
     source = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    result = ''.join(random.choice(source) for _ in range(length))
+    return(result)
+
+
+def gen_nonce_str(length: int = 32) -> str:
+    '''
+    生成随机字符串
+
+    参数:
+        length: 密钥参数
+    返回:
+        str: 随机字符串
+    '''
+    source = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     result = ''.join(random.choice(source) for _ in range(length))
     return(result)
 
