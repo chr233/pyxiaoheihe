@@ -3,7 +3,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 13:32:04
 # @LastEditors  : Chr_
-# @LastEditTime : 2021-11-18 20:46:02
+# @LastEditTime : 2021-11-19 11:52:36
 # @Description  : 小黑盒客户端模块
 '''
 
@@ -19,7 +19,7 @@ class HeyBoxClient(Account, Community, Game, Index):
     Python实现的小黑盒客户端
     '''
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool = False, rpc_server: str = None):
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool = False):
         '''
         初始化
 
@@ -28,7 +28,7 @@ class HeyBoxClient(Account, Community, Game, Index):
             hbxcfg: 客户端设置字典,需要包含
             [debug]: 调试模式开关,打开后会输出调试日志
         '''
-        super().__init__(account, hbxcfg, debug, rpc_server)
+        super().__init__(account, hbxcfg, debug)
 
     def debug(self):
         '''

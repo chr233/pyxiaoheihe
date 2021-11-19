@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 17:50:27
 # @LastEditors  : Chr_
-# @LastEditTime : 2021-11-18 21:22:48
+# @LastEditTime : 2021-11-19 11:51:55
 # @Description  : 网络模块,负责网络请求
 '''
 
@@ -34,7 +34,7 @@ class Network():
 
     logger = logging.getLogger('-')
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool, rpc_server: str = 'http://localhost:9000/encode'):
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool):
         super().__init__()
 
         try:
@@ -74,7 +74,7 @@ class Network():
         self.__heybox_id = heybox_id
         self.__sleep_interval = sleep_interval
         self.__auto_report = auto_report
-        self.__rpc_server = rpc_server
+        self.__rpc_server = hbxcfg.get('rpc_server','http://localhost:9000/encode')
         self.logger = logging.getLogger(str(heybox_id))
         self.logger.debug(f'网络模块初始化完毕, 适配版本为{HEYBOX_VERSION}')
 

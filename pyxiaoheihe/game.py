@@ -2,7 +2,7 @@
 # @Author       : Chr_
 # @Date         : 2020-07-30 16:29:29
 # @LastEditors  : Chr_
-# @LastEditTime : 2021-11-18 20:52:44
+# @LastEditTime : 2021-11-19 11:51:21
 # @Description  : 游戏模块,负责[游戏库]TAB下的内容
 '''
 
@@ -14,7 +14,7 @@ from .error import ClientException, Ignore
 
 class Game(Network):
 
-    def __init__(self, account: dict, hbxcfg: dict, debug: bool, rpc_server: str):
+    def __init__(self, account: dict, hbxcfg: dict, debug: bool):
         super().__init__(account, hbxcfg, debug)
 
     def debug(self):

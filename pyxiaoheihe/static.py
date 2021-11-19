@@ -2,12 +2,12 @@
 # @Author       : Chr_
 # @Date         : 2020-07-16 15:54:49
 # @LastEditors  : Chr_
-# @LastEditTime : 2021-11-18 21:28:17
+# @LastEditTime : 2021-11-19 11:52:43
 # @Description  : 静态资源
 '''
 
 # PYXIAOHEIHE版本
-PYXIAOHEIHE_VERSION = '1.0.10'
+PYXIAOHEIHE_VERSION = '1.0.11'
 
 # 小黑盒客户端版本号
 HEYBOX_VERSION = '1.3.191'
