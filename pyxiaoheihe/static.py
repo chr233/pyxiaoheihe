@@ -2,15 +2,15 @@
 # @Author       : Chr_
 # @Date         : 2020-07-16 15:54:49
 # @LastEditors  : Chr_
-# @LastEditTime : 2021-11-19 11:52:43
+# @LastEditTime : 2021-12-06 00:14:40
 # @Description  : 静态资源
 '''
 
 # PYXIAOHEIHE版本
-PYXIAOHEIHE_VERSION = '1.0.11'
+PYXIAOHEIHE_VERSION = '1.0.12'
 
 # 小黑盒客户端版本号
-HEYBOX_VERSION = '1.3.191'
+HEYBOX_VERSION = '1.3.193'
 
 # 遇到空结果继续请求的次数
 EMPTY_RETRYS = 0
