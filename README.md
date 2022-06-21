@@ -2,6 +2,8 @@
 
 [![Codacy Badge][codacy_b]][Codacy] [![PyPI][pypi_v_b]][pypi] [![License][license_b]][License]  
 
+停止维护本仓库，可以试试 C# 实现的小黑盒客户端 [Xiaoheihe_CShape](https://app.codacy.com/gh/chr233/Xiaoheihe_CShape)
+
 一个使用requests库完成的小黑盒客户端, 覆盖了30%左右的客户端功能.
 
 例程: [XHH_AUTO][xhh_auto]
